@@ -28,28 +28,29 @@ class AuthController {
     session_start();
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $name = $_POST['name'];
         $email = $_POST['email'];
         $password = $_POST['password'];
         $confirm_password = $_POST['confirm_password'];
-        $role = $_POST['role'] ?? 'salarié'; // Default role if you want admin to assign role
+        $role = $_POST['role'] ?? ''; // Default role : admin assign role
 
         if ($password !== $confirm_password) {
             $error = "Les mots de passe ne correspondent pas.";
-            include '../View/FrontOffice/register.php';
+            include __DIR__ . '/../View/FrontOffice/register.php';
             return;
         }
 
-        $success = User::register($email, $password, $role);
+        $success = User::register($name, $email, $password, $role);
 
         if ($success) {
             header('Location: index.php?page=login');
             exit;
         } else {
             $error = "Cet email est déjà utilisé.";
-            include '../View/FrontOffice/register.php';
+            include __DIR__ . '/../View/FrontOffice/register.php';
         }
     } else {
-        include '../View/FrontOffice/register.php';
+        include __DIR__ . '/../View/FrontOffice/register.php';
     }
     }
 

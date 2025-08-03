@@ -15,6 +15,7 @@ class User {
             // Return only relevant fields, avoid returning password hash
             return [
                 'id' => $user['id'],
+                'name' => $user['name'],
                 'email' => $user['email'],
                 'role' => $user['role']
             ];
@@ -23,7 +24,7 @@ class User {
     }
 
 
-    public static function register($email, $password, $role = 'salarié') {
+    public static function register($name, $email, $password, $role = '') {
     $pdo = Config::getConnexion();
 
     // Check if email exists
@@ -35,8 +36,8 @@ class User {
 
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    $stmt = $pdo->prepare("INSERT INTO users (email, password, role) VALUES (?, ?, ?)");
-    return $stmt->execute([$email, $hashedPassword, $role]);
+    $stmt = $pdo->prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)");
+    return $stmt->execute([$name, $email, $hashedPassword, $role]);
     }
 
 }
