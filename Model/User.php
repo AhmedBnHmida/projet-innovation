@@ -4,6 +4,31 @@ require_once __DIR__ . '/../config/config.php';
 
 class User {
 
+    private ?int $id = null;
+    private string $name;
+    private string $email;
+    private string $password; // hashed
+    private string $role;
+
+    public function __construct(string $name, string $email, string $password, string $role = '') {
+        $this->name = $name;
+        $this->email = $email;
+        $this->password = $password;
+        $this->role = $role;
+    }
+
+    // getters / setters...
+    public function getId(): ?int { return $this->id; }
+    public function setId(int $id): void { $this->id = $id; }
+    public function getName(): string { return $this->name; }
+    public function setName(string $n): void { $this->name = $n; }
+    public function getEmail(): string { return $this->email; }
+    public function setEmail(string $e): void { $this->email = $e; }
+    public function getPassword(): string { return $this->password; }
+    public function setPassword(string $p): void { $this->password = $p; }
+    public function getRole(): string { return $this->role; }
+    public function setRole(string $r): void { $this->role = $r; }
+
 
     public static function login($email, $password) {
         $pdo = Config::getConnexion();

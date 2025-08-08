@@ -4,6 +4,7 @@
 // Simple router to load pages
 $page = $_GET['page'] ?? 'landing';
 
+
 switch ($page) {
     case 'landing':
         include __DIR__ . '/View/FrontOffice/landing.php';
