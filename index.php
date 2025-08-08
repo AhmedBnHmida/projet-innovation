@@ -9,6 +9,7 @@ switch ($page) {
     case 'landing':
         include __DIR__ . '/View/FrontOffice/landing.php';
         break;
+
     case 'login':
         require_once 'Controller/AuthController.php';
         $auth = new AuthController();
@@ -29,6 +30,44 @@ switch ($page) {
 
     case 'dashboard':
         include 'View/FrontOffice/dashboard.php';
+        break;
+
+    // Admin routes - user management:
+    case 'admin_users':
+        require_once 'Controller/UserController.php';
+        $userController = new UserController();
+        $userController->list();
+        break;
+
+    case 'admin_user_create':
+        require_once 'Controller/UserController.php';
+        $userController = new UserController();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $userController->create();
+        } else {
+            $userController->createForm();
+        }
+        break;
+
+    case 'admin_user_edit':
+        require_once 'Controller/UserController.php';
+        $userController = new UserController();
+        $id = intval($_GET['id'] ?? 0);
+        $userController->editForm($id);
+        break;
+
+    case 'admin_user_update':
+        require_once 'Controller/UserController.php';
+        $userController = new UserController();
+        $id = intval($_GET['id'] ?? 0);
+        $userController->update($id);
+        break;
+
+    case 'admin_user_delete':
+        require_once 'Controller/UserController.php';
+        $userController = new UserController();
+        $id = intval($_GET['id'] ?? 0);
+        $userController->delete($id);
         break;
 
     default:

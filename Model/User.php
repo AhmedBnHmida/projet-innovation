@@ -1,6 +1,11 @@
 <?php
 require_once __DIR__ . '/../config/config.php';
 
+enum UserRole: string {
+    case ADMIN = 'admin';
+    case EMPLOYEE = 'employee';
+    case EVALUATOR = 'evaluator';
+}
 
 class User {
 
@@ -8,12 +13,13 @@ class User {
     private string $name;
     private string $email;
     private string $password; // hashed
-    private string $role;
+    private UserRole $role;
 
-    public function __construct(string $name, string $email, string $password, string $role = '') {
+    public function __construct(string $name, string $email, string $password, UserRole $role = UserRole::EMPLOYEE) {
         $this->name = $name;
         $this->email = $email;
         $this->password = $password;
+        $this->role = $role;    
         $this->role = $role;
     }
 
@@ -26,8 +32,8 @@ class User {
     public function setEmail(string $e): void { $this->email = $e; }
     public function getPassword(): string { return $this->password; }
     public function setPassword(string $p): void { $this->password = $p; }
-    public function getRole(): string { return $this->role; }
-    public function setRole(string $r): void { $this->role = $r; }
+    public function getRole(): UserRole { return $this->role; }
+    public function setRole(UserRole $r): void { $this->role = $r; }
 
 
     public static function login($email, $password) {
