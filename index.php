@@ -7,7 +7,7 @@ $page = $_GET['page'] ?? 'landing';
 
 switch ($page) {
     case 'landing':
-        include __DIR__ . '/View/FrontOffice/landing.php';
+        include __DIR__ . '/View/components/landing.php';
         break;
 
     case 'login':
@@ -29,7 +29,7 @@ switch ($page) {
         break;
 
     case 'dashboard':
-        include 'View/FrontOffice/dashboard.php';
+        include 'View/components/dashboard.php';
         break;
 
     // Admin routes - user management:
@@ -107,6 +107,76 @@ switch ($page) {
         $id = intval($_GET['id'] ?? 0);
         $themeController->delete($id);
         break;
+        
+    // Employee routes - Idea submission:
+    case 'themes_employee':
+        require_once 'Controller/ThemeController.php';
+        $themeController = new ThemeController();
+        $themeController->listThemesEmployee();
+        break;
+
+    case 'theme_detail_employee':
+        require_once 'Controller/ThemeController.php';
+        $themeController = new ThemeController();
+        $themeId = intval($_GET['id'] ?? 0);
+        if ($themeId > 0) {
+            $themeController->showThemeDetailEmployee($themeId);
+        } else {
+            header('Location: index.php?page=themes_employee');
+        }
+        break;
+
+    case 'my_ideas':
+        require_once 'Controller/IdeaController.php';
+        $ideaController = new IdeaController();
+        $ideaController->listMyIdeas();
+        break;
+
+    case 'view_idea':
+        require_once 'Controller/IdeaController.php';
+        $ideaController = new IdeaController();
+        $id = intval($_GET['id'] ?? 0);
+        if ($id > 0) {
+            $ideaController->viewIdea($id);
+        } else {
+            header('Location: index.php?page=my_ideas');
+        }
+        break;
+
+    case 'edit_idea':
+        require_once 'Controller/IdeaController.php';
+        $ideaController = new IdeaController();
+        $id = intval($_GET['id'] ?? 0);
+        if ($id > 0) {
+            $ideaController->editIdeaForm($id);
+        } else {
+            header('Location: index.php?page=my_ideas');
+        }
+        break;
+
+    case 'update_idea':
+        require_once 'Controller/IdeaController.php';
+        $ideaController = new IdeaController();
+        $id = intval($_GET['id'] ?? 0);
+        if ($id > 0 && $_SERVER['REQUEST_METHOD'] === 'POST') {
+            $ideaController->updateIdea($id);
+        } else {
+            header('Location: index.php?page=my_ideas');
+        }
+        break;
+
+    case 'delete_idea':
+        require_once 'Controller/IdeaController.php';
+        $ideaController = new IdeaController();
+        $id = intval($_GET['id'] ?? 0);
+        if ($id > 0) {
+            $ideaController->deleteIdea($id);
+        } else {
+            header('Location: index.php?page=my_ideas');
+        }
+        break;
+
+
 
 
     default:

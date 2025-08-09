@@ -37,7 +37,7 @@ $user = $_SESSION['user'];
 <?php elseif ($user['role'] === 'employee'): ?>
     <div class="row">
         <div class="col-md-6 mb-3">
-            <a href="index.php?page=submit_idea" class="btn btn-outline-success w-100">Proposer une idée</a>
+            <a href="index.php?page=themes_employee" class="btn btn-outline-success w-100">Thématiques</a>
         </div>
         <div class="col-md-6 mb-3">
             <a href="index.php?page=my_feedback" class="btn btn-outline-info w-100">Voir mes retours</a>

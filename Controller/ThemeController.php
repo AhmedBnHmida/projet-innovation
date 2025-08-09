@@ -130,4 +130,64 @@ class ThemeController {
 
         return $theme;
     }
+
+
+    /************************************************************************* */
+
+    // FRONT OFFICE - Employee: List all themes for browsing
+    public function listThemesEmployee() {
+        session_start();
+        if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'employee') {
+            header('Location: index.php?page=login');
+            exit;
+        }
+
+        $stmt = $this->pdo->query("SELECT id, title, description FROM themes");
+        $themes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        include __DIR__ . '/../View/FrontOffice/employee_themes_list.php';
+    }
+
+    // FRONT OFFICE - Employee: Show theme detail and submission form
+    public function showThemeDetailEmployee(int $themeId) {
+        session_start();
+        if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'employee') {
+            header('Location: index.php?page=login');
+            exit;
+        }
+
+        $stmt = $this->pdo->prepare("SELECT * FROM themes WHERE id = ?");
+        $stmt->execute([$themeId]);
+        $theme = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$theme) {
+            header('Location: index.php?page=themes_employee');
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $title = trim($_POST['title']);
+            $description = trim($_POST['description']);
+            $user_id = $_SESSION['user']['id'];
+
+            if (empty($title)) {
+                $error = "Le titre de l'idée est obligatoire.";
+                include __DIR__ . '/../View/FrontOffice/employee_theme_detail.php';
+                return;
+            }
+
+            $stmt = $this->pdo->prepare("INSERT INTO ideas (title, description, user_id, theme_id, created_at) VALUES (?, ?, ?, ?, NOW())");
+            $success = $stmt->execute([$title, $description, $user_id, $themeId]);
+
+            if ($success) {
+                header('Location: index.php?page=my_ideas');
+                exit;
+            } else {
+                $error = "Erreur lors de la soumission de l'idée.";
+                include __DIR__ . '/../View/FrontOffice/employee_theme_detail.php';
+            }
+        } else {
+            include __DIR__ . '/../View/FrontOffice/employee_theme_detail.php';
+        }
+    }
 }

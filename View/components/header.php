@@ -31,7 +31,8 @@
                         <li class="nav-item"><a class="nav-link" href="index.php?page=admin_themes">Thématiques</a></li>
                     
                     <?php elseif ($_SESSION['user']['role'] === 'employee'): ?>
-                        <li class="nav-item"><a class="nav-link" href="index.php?page=submit_idea">Proposer une idée</a></li>
+                        <li class="nav-item"><a class="nav-link" href="index.php?page=themes_employee">Thématiques</a></li>
+                        <li class="nav-item"><a class="nav-link" href="index.php?page=my_ideas">Mes idées</a></li>
                         <li class="nav-item"><a class="nav-link" href="index.php?page=my_feedback">Mes retours</a></li>
                     
                     <?php elseif ($_SESSION['user']['role'] === 'evaluator'): ?>

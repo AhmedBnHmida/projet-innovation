@@ -17,10 +17,10 @@ class AuthController {
                 exit;
             } else {
                 $error = "Identifiants incorrects.";
-                include __DIR__ . '/../View/FrontOffice/login.php';
+                include __DIR__ . '/../View/components/login.php';
             }
         } else {
-            include __DIR__ . '/../View/FrontOffice/login.php';
+            include __DIR__ . '/../View/components/login.php';
         }
     }
 
@@ -36,7 +36,7 @@ class AuthController {
 
         if ($password !== $confirm_password) {
             $error = "Les mots de passe ne correspondent pas.";
-            include __DIR__ . '/../View/FrontOffice/register.php';
+            include __DIR__ . '/../View/components/register.php';
             return;
         }
 
@@ -47,10 +47,10 @@ class AuthController {
             exit;
         } else {
             $error = "Cet email est déjà utilisé.";
-            include __DIR__ . '/../View/FrontOffice/register.php';
+            include __DIR__ . '/../View/components/register.php';
         }
     } else {
-        include __DIR__ . '/../View/FrontOffice/register.php';
+        include __DIR__ . '/../View/components/register.php';
     }
     }
 
