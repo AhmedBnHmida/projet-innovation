@@ -32,7 +32,7 @@ class AuthController {
         $email = $_POST['email'];
         $password = $_POST['password'];
         $confirm_password = $_POST['confirm_password'];
-        $role = $_POST['role'] ?? ''; // Default role : admin assign role
+        $role = $_POST['role'] ?? 'user'; // Default role : user for all new users admin will assign roles later
 
         if ($password !== $confirm_password) {
             $error = "Les mots de passe ne correspondent pas.";

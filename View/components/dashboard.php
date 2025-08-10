@@ -14,7 +14,7 @@ $user = $_SESSION['user'];
 <div class="text-center">
     <h1>Bienvenue, <?= htmlspecialchars($user['name']) ?> !</h1>
 
-    <?php if ($user['role'] === ''): ?>
+    <?php if ($user['role'] === 'user'): ?>
         <p style="color: red;">Wait for the admin to assign you a role.</p>
     <?php else: ?>
         <p>Vous êtes connecté en tant que <strong><?= htmlspecialchars($user['role']) ?></strong>.</p>

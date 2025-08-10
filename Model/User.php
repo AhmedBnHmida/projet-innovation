@@ -5,6 +5,7 @@ enum UserRole: string {
     case ADMIN = 'admin';
     case EMPLOYEE = 'employee';
     case EVALUATOR = 'evaluator';
+    case USER = 'user';
 }
 
 class User {
@@ -55,7 +56,7 @@ class User {
     }
 
 
-    public static function register($name, $email, $password, $role = '') {
+    public static function register($name, $email, $password, $role = 'user') {
     $pdo = Config::getConnexion();
 
     // Check if email exists
