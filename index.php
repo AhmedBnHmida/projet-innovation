@@ -176,6 +176,12 @@ switch ($page) {
         }
         break;
     
+    case 'my_feedback':
+        require_once 'Controller/IdeaController.php';
+        $ideaController = new IdeaController();
+        $ideaController->listMyFeedback();
+        break;
+    
     // Evaluator routes - Rating ideas:
     case 'rate_ideas':
         require_once 'Controller/RatingController.php';
@@ -202,10 +208,6 @@ switch ($page) {
         $ctrl = new RatingController();
         $ctrl->topIdeas();
         break;
-
-
-
-
 
     default:
         echo "404 - Page introuvable";

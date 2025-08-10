@@ -162,4 +162,30 @@ class IdeaController {
         header('Location: index.php?page=my_ideas');
         exit;
     }
+
+
+    // FRONT OFFICE - Employee: View feedback on my ideas
+    public function listMyFeedback() {
+        $this->checkEmployee();
+
+        $user_id = $_SESSION['user']['id'];
+
+        // Fetch ratings/comments for the employee's ideas
+        $stmt = $this->pdo->prepare("
+            SELECT i.title AS idea_title,
+                t.title AS theme_title,
+                r.rating,
+                r.created_at
+            FROM ideas i
+            JOIN themes t ON i.theme_id = t.id
+            JOIN ratings r ON i.id = r.idea_id
+            WHERE i.user_id = ?
+            ORDER BY r.created_at DESC
+        ");
+        $stmt->execute([$user_id]);
+        $feedback = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        include __DIR__ . '/../View/FrontOffice/employee_my_feedback.php';
+    }
+
 }
