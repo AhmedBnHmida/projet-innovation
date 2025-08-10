@@ -175,6 +175,34 @@ switch ($page) {
             header('Location: index.php?page=my_ideas');
         }
         break;
+    
+    // Evaluator routes - Rating ideas:
+    case 'rate_ideas':
+        require_once 'Controller/RatingController.php';
+        $ctrl = new RatingController();
+        $ctrl->listThemes();
+        break;
+
+    case 'rate_ideas_theme':
+        require_once 'Controller/RatingController.php';
+        $ctrl = new RatingController();
+        $themeId = intval($_GET['id']);
+        $ctrl->listIdeasByTheme($themeId);
+        break;
+
+    case 'rate_idea':
+        require_once 'Controller/RatingController.php';
+        $ctrl = new RatingController();
+        $ideaId = intval($_GET['id']);
+        $ctrl->rateIdea($ideaId);
+        break;
+
+    case 'top_ideas':
+        require_once 'Controller/RatingController.php';
+        $ctrl = new RatingController();
+        $ctrl->topIdeas();
+        break;
+
 
 
 
