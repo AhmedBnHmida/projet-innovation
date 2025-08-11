@@ -38,6 +38,8 @@
                     <?php elseif ($_SESSION['user']['role'] === 'evaluator'): ?>
                         <li class="nav-item"><a class="nav-link" href="index.php?page=rate_ideas">Évaluer</a></li>
                         <li class="nav-item"><a class="nav-link" href="index.php?page=top_ideas">Top idées</a></li>
+                        <li class="nav-item"><a class="nav-link" href="index.php?page=my_ratings">Mes évaluations</a></li>
+
                     <?php endif; ?>
 
                     <li class="nav-item"><a class="nav-link" href="index.php?page=logout">Déconnexion</a></li>

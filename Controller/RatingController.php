@@ -72,4 +72,81 @@ class RatingController {
         $ideas = $stmt->fetchAll(PDO::FETCH_ASSOC);
         include __DIR__ . '/../View/FrontOffice/Evaluator_top_ideas.php';
     }
+
+    public function listMyRatings() {
+        $this->checkEvaluator();
+
+        $evaluatorId = $_SESSION['user']['id'];
+
+        $stmt = $this->pdo->prepare("
+            SELECT i.id AS idea_id, i.title AS idea_title, t.title AS theme_title, r.rating, r.created_at
+            FROM ratings r
+            JOIN ideas i ON r.idea_id = i.id
+            JOIN themes t ON i.theme_id = t.id
+            WHERE r.evaluator_id = ?
+            ORDER BY r.created_at DESC
+        ");
+        $stmt->execute([$evaluatorId]);
+        $myRatings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        include __DIR__ . '/../View/FrontOffice/evaluator_my_ratings.php';
+    }
+
+
+    // Show edit form for a rating
+    public function editRatingForm($ideaId) {
+        $this->checkEvaluator();
+
+        $evaluatorId = $_SESSION['user']['id'];
+
+        $stmt = $this->pdo->prepare("
+            SELECT r.rating, i.title AS idea_title
+            FROM ratings r
+            JOIN ideas i ON r.idea_id = i.id
+            WHERE r.evaluator_id = ? AND r.idea_id = ?
+        ");
+        $stmt->execute([$evaluatorId, $ideaId]);
+        $rating = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$rating) {
+            header('Location: index.php?page=my_ratings');
+            exit;
+        }
+
+        include __DIR__ . '/../View/FrontOffice/evaluator_edit_rating.php';
+    }
+
+    // Handle POST update of a rating
+    public function updateRating($ideaId) {
+        $this->checkEvaluator();
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $evaluatorId = $_SESSION['user']['id'];
+            $newRating = intval($_POST['rating']);
+
+            $stmt = $this->pdo->prepare("
+                UPDATE ratings SET rating = ? WHERE evaluator_id = ? AND idea_id = ?
+            ");
+            $stmt->execute([$newRating, $evaluatorId, $ideaId]);
+
+            header('Location: index.php?page=my_ratings');
+            exit;
+        }
+    }
+
+    // Delete a rating
+    public function deleteRating($ideaId) {
+        $this->checkEvaluator();
+
+        $evaluatorId = $_SESSION['user']['id'];
+
+        $stmt = $this->pdo->prepare("
+            DELETE FROM ratings WHERE evaluator_id = ? AND idea_id = ?
+        ");
+        $stmt->execute([$evaluatorId, $ideaId]);
+
+        header('Location: index.php?page=my_ratings');
+        exit;
+    }
+
 }

@@ -209,6 +209,32 @@ switch ($page) {
         $ctrl->topIdeas();
         break;
 
+    case 'my_ratings':
+        require_once 'Controller/RatingController.php';
+        $ratingController = new RatingController();
+        $ratingController->listMyRatings();
+        break;
+
+    case 'edit_rating':
+        require_once 'Controller/RatingController.php';
+        $ratingController = new RatingController();
+        $ratingController->editRatingForm(intval($_GET['id']));
+        break;
+
+    case 'update_rating':
+        require_once 'Controller/RatingController.php';
+        $ratingController = new RatingController();
+        $ratingController->updateRating(intval($_GET['id']));
+        break;
+
+    case 'delete_rating':
+        require_once 'Controller/RatingController.php';
+        $ratingController = new RatingController();
+        $ratingController->deleteRating(intval($_GET['id']));
+        break;
+
+
+
     default:
         echo "404 - Page introuvable";
 }
