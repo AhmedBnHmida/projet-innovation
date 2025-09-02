@@ -7,10 +7,64 @@
     <title>Plateforme Innovation</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            background: linear-gradient(to right, #f3f9ff, #e8f5e9);
-        }
-    </style>
+    body {
+        background: linear-gradient(to right, #f3f9ff, #e8f5e9);
+    }
+
+    /* General nav link style (button-like) */
+    .navbar-nav .nav-link {
+        padding: 8px 15px;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        color: #fff !important;
+        margin-left: 5px;
+    }
+
+    .navbar-nav .nav-link:hover {
+        text-decoration: none;
+    }
+
+    /* Dashboard/regular links hover effect */
+    .navbar-nav .nav-link:not([href*="logout"]):not([href*="login"]):not([href*="register"]):hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        color: #fff !important;
+    }
+
+    /* Déconnexion button style */
+    .navbar-nav .nav-link[href*="logout"] {
+        background-color: #c82333; /* Bootstrap danger */
+        font-weight: bold;
+    }
+
+    .navbar-nav .nav-link[href*="logout"]:hover {
+        background-color: #dc3545; /* brighter red */
+        color: #fff !important;
+    }
+
+    /* Connexion button style */
+    .navbar-nav .nav-link[href*="login"] {
+        background-color: #007bff; /* Bootstrap primary */
+        font-weight: bold;
+    }
+
+    .navbar-nav .nav-link[href*="login"]:hover {
+        background-color: #0056b3; /* darker blue */
+        color: #fff !important;
+    }
+
+    /* Créer un compte button style */
+    .navbar-nav .nav-link[href*="register"] {
+        background-color: #28a745; /* Bootstrap success */
+        font-weight: bold;
+    }
+
+    .navbar-nav .nav-link[href*="register"]:hover {
+        background-color: #218838; /* darker green */
+        color: #fff !important;
+    }
+</style>
+
+
 </head>
 <body class="bg-light">
 

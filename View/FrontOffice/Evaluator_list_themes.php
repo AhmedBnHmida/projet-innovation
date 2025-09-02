@@ -5,34 +5,35 @@ if (session_status() === PHP_SESSION_NONE) {
 include __DIR__ . '/../components/header.php';
 ?>
 
-<div class="container my-4">
-    <h2>Liste des thématiques</h2>
+<div class="container my-5">
+    <h2 class="mb-4">Liste des thématiques</h2>
 
     <?php if (empty($themes)): ?>
         <p>Aucune thématique disponible.</p>
     <?php else: ?>
-        <table class="table table-bordered table-striped">
-            <thead class="table-primary">
-                <tr>
-                    <th>Nom</th>
-                    <th>Description</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($themes as $theme): ?>
-                    <tr>
-                        <td><?= htmlspecialchars($theme['title']) ?></td>
-                        <td><?= nl2br(htmlspecialchars($theme['description'] ?? '')) ?></td>
-                        <td>
-                            <a href="index.php?page=rate_ideas_theme&id=<?= $theme['id'] ?>" class="btn btn-primary btn-sm">
+        <div class="row g-4">
+            <?php foreach ($themes as $theme): ?>
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <!-- Default avatar -->
+                        <img src="public/assets/avatar.jpg" class="card-img-top" alt="Thématique image" style="height: 180px; object-fit: cover;">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">
+                                <?= htmlspecialchars($theme['title']) ?>
+                            </h5>
+                            <?php if (!empty($theme['description'])): ?>
+                                <p class="card-text text-muted flex-grow-1"><?= nl2br(htmlspecialchars($theme['description'])) ?></p>
+                            <?php else: ?>
+                                <p class="card-text text-muted flex-grow-1">Aucune description disponible.</p>
+                            <?php endif; ?>
+                            <a href="index.php?page=rate_ideas_theme&id=<?= $theme['id'] ?>" class="btn btn-primary btn-sm mt-2">
                                 Voir idées
                             </a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
     <?php endif; ?>
 </div>
 

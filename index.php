@@ -209,6 +209,18 @@ switch ($page) {
         $ctrl->topIdeas();
         break;
 
+    case 'top_idea_detail':
+        require_once 'Controller/RatingController.php';
+        $ctrl = new RatingController();
+        $ideaId = intval($_GET['id'] ?? 0);
+        if ($ideaId > 0) {
+            $ctrl->viewIdeaDetail($ideaId); // new method we created
+        } else {
+            header('Location: index.php?page=top_ideas');
+        }
+        break;
+
+
     case 'my_ratings':
         require_once 'Controller/RatingController.php';
         $ratingController = new RatingController();

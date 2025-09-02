@@ -28,12 +28,36 @@ class RatingController {
         include __DIR__ . '/../View/FrontOffice/Evaluator_list_themes.php';
     }
 
+    /*
     public function listIdeasByTheme($themeId) {
         $this->checkEvaluator();
 
         $stmt = $this->pdo->prepare("SELECT * FROM ideas WHERE theme_id = ?");
         $stmt->execute([$themeId]);
         $ideas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        include __DIR__ . '/../View/FrontOffice/Evaluator_list_ideas.php';
+    }
+    */
+    
+    public function listIdeasByTheme($themeId) {
+        $this->checkEvaluator();
+
+        // Fetch the theme info
+        $stmtTheme = $this->pdo->prepare("SELECT * FROM themes WHERE id = ?");
+        $stmtTheme->execute([$themeId]);
+        $theme = $stmtTheme->fetch(PDO::FETCH_ASSOC);
+
+        if (!$theme) {
+            // Theme not found, redirect or show message
+            header('Location: index.php?page=rate_ideas');
+            exit;
+        }
+
+        // Fetch ideas under that theme
+        $stmtIdeas = $this->pdo->prepare("SELECT * FROM ideas WHERE theme_id = ?");
+        $stmtIdeas->execute([$themeId]);
+        $ideas = $stmtIdeas->fetchAll(PDO::FETCH_ASSOC);
+
         include __DIR__ . '/../View/FrontOffice/Evaluator_list_ideas.php';
     }
 
@@ -61,7 +85,7 @@ class RatingController {
         $this->checkEvaluator();
 
         $stmt = $this->pdo->query("
-            SELECT i.title, t.title AS theme_title, AVG(r.rating) AS avg_rating
+            SELECT i.id, i.title, t.title AS theme_title, i.description, i.created_at, AVG(r.rating) AS avg_rating
             FROM ideas i
             JOIN themes t ON i.theme_id = t.id
             JOIN ratings r ON i.id = r.idea_id
@@ -72,6 +96,39 @@ class RatingController {
         $ideas = $stmt->fetchAll(PDO::FETCH_ASSOC);
         include __DIR__ . '/../View/FrontOffice/Evaluator_top_ideas.php';
     }
+
+
+    public function viewIdeaDetail($ideaId) {
+        $this->checkEvaluator();
+
+        // Fetch idea with theme info and average rating
+        $stmt = $this->pdo->prepare("
+            SELECT i.*, t.title AS theme_title, AVG(r.rating) AS avg_rating
+            FROM ideas i
+            JOIN themes t ON i.theme_id = t.id
+            LEFT JOIN ratings r ON i.id = r.idea_id
+            WHERE i.id = ?
+            GROUP BY i.id
+        ");
+        $stmt->execute([$ideaId]);
+        $idea = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$idea) {
+            header('Location: index.php?page=top_ideas');
+            exit;
+        }
+
+        // Fetch evaluator's rating if exists
+        $evaluatorId = $_SESSION['user']['id'];
+        $stmt = $this->pdo->prepare("
+            SELECT rating FROM ratings WHERE idea_id = ? AND evaluator_id = ?
+        ");
+        $stmt->execute([$ideaId, $evaluatorId]);
+        $myRating = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        include __DIR__ . '/../View/FrontOffice/Evaluator_idea_detail.php';
+    }
+
 
     public function listMyRatings() {
         $this->checkEvaluator();
